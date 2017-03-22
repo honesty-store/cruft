@@ -1,0 +1,40 @@
+{
+  "name": "cruft-ddb",
+  "version": "1.0.0",
+  "description": "A simple optimistic-locking abstraction over Dynamo DB",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "git@github.com:honesty-store/cruft-ddb.git",
+  "author": "Chris Price <price.c@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.28.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.35",
+    "@types/jest": "^19.2.2",
+    "@types/node": "^7.0.8",
+    "chai": "^3.5.0",
+    "jest": "^19.0.2",
+    "ts-jest": "^19.0.2",
+    "tslint": "^4.5.1",
+    "tslint-eslint-rules": "^3.5.1",
+    "typescript": "^2.2.1",
+    "vrsource-tslint-rules": "^4.0.1"
+  },
+  "scripts": {
+    "lint": "tslint --project tsconfig.json --type-check",
+    "test": "npm run lint && tsc && jest"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "src/.*(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
+}
