@@ -2,7 +2,9 @@ import { assertHasValidDynamoDBFieldNames } from './assertHasValidDynamoDBFieldN
 import { IConfiguration, IHasVersion, IHasMetadata } from './index';
 
 export const create = <T>({ client, tableName }: IConfiguration) =>
-  async (item: T): Promise<T & IHasVersion & IHasMetadata> => {
+  // hack - should take a plain T but need literal type subtraction
+  // for that https://github.com/Microsoft/TypeScript/issues/12215
+  async (item: T & { version: 0 }): Promise<T & IHasVersion & IHasMetadata> => {
     assertHasValidDynamoDBFieldNames(item);
 
     // hack - can't use object rest/spread with types yet - Microsoft/TypeScript/issues/10727
