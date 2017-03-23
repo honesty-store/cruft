@@ -3,6 +3,7 @@ import { create } from './create';
 import { read } from './read';
 import { update } from './update';
 import { find } from './find';
+import { __findAll } from './findAll';
 import { truncate } from './truncate';
 
 export type Timestamp = number;
@@ -57,6 +58,7 @@ export default <T extends IHasId>({
     create: create<T>({ client, tableName }),
     read: read<T>({ client, tableName }),
     update: update<T>({ client, tableName }),
+    __findAll: __findAll<T>({ client, tableName }),
     find: find<T>({ client, tableName }),
     truncate: truncate({ client, tableName })
   };
