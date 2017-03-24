@@ -1,6 +1,15 @@
 import { assertHasValidDynamoDBFieldNames } from './assertHasValidDynamoDBFieldNames';
 import { IConfiguration, IHasVersion, IHasMetadata } from './index';
 
+const createFilterExpression = (fieldNames, fields) =>
+  fieldNames.reduce(
+    (obj, key) => {
+      obj[`:${key}`] = fields[key];
+      return obj;
+    },
+    {}
+  );
+
 // hack to retrieve all items until 2.3 arrives with support for async iterators
 // https://github.com/Microsoft/TypeScript/pull/12346
 export const __findAll = <T>({ client, tableName }: IConfiguration) =>
@@ -13,16 +22,14 @@ export const __findAll = <T>({ client, tableName }: IConfiguration) =>
 
     const fieldNames = Object.keys(fields);
 
-    const filterExpression = fieldNames.map(key => `${key} = :${key}`)
-      .join(' and ');
+    const filterExpression = fieldNames.length === 0
+      ? null
+      : fieldNames.map(key => `${key} = :${key}`)
+        .join(' and ');
 
-    const expressionAtributeValues = fieldNames.reduce(
-      (obj, key) => {
-        obj[`:${key}`] = fields[key];
-        return obj;
-      },
-      {}
-    );
+    const expressionAtributeValues = fieldNames.length === 0
+      ? null
+      : createFilterExpression(fieldNames, fields);
 
     let result: Array<T & IHasVersion & IHasMetadata> = [];
     let key = null;

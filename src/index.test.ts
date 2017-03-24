@@ -168,6 +168,24 @@ describe('cruft', () => {
 
   });
 
+  describe('__findAll', async () => {
+
+    it('should find items without filter', async () => {
+      await cruft.create({ id: 'foo', bar: 4 });
+      const items = await cruft.__findAll({});
+      expect(items).to.lengthOf(1, 'Incorrect item count');
+    });
+
+    (<any>it)('should find items over many pages', async () => {
+      for (let i = 0; i < 1000; i++) {
+        await cruft.create({ id: String(i), bar: 4 });
+      }
+      const items = await cruft.__findAll({ bar: 4 });
+      expect(items).to.lengthOf(1000, 'Incorrect item count');
+    }, 60000);
+
+  });
+
   describe('truncate', () => {
 
     it('should truncate an item', async () => {
