@@ -15,8 +15,16 @@ export const update = <T>({ client, tableName }: IConfiguration) =>
       .filter(key => key !== 'id')
       .filter(key => key !== 'created');
 
-    const updateExpression = fieldNames.map(key => `${key}=:${key}`)
+    const updateExpression = fieldNames.map(key => `#${key}=:${key}`)
       .join(', ');
+
+    const updateExpressionAttributeNames = fieldNames.reduce(
+      (obj, key) => {
+        obj[`#${key}`] = key;
+        return obj;
+      },
+      {}
+    );
 
     const updateExpressionAttributeValues = fieldNames.reduce(
       (obj, key) => {
@@ -41,6 +49,7 @@ export const update = <T>({ client, tableName }: IConfiguration) =>
         },
         ConditionExpression: 'version = :previousVersion',
         UpdateExpression: `set ${updateExpression}`,
+        ExpressionAttributeNames: updateExpressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW'
       })

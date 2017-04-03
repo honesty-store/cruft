@@ -4,6 +4,7 @@ import index from './index';
 
 interface IFoo {
   id: string;
+  count?: number;
   bar?: number;
   'uh oh'?: boolean;
 }
@@ -106,6 +107,12 @@ describe('cruft', () => {
       expect(original.created).to.equal(updated.created, 'Incorrect created timestamp');
       expect(updated.created).not.to.equal(updated.modified, 'Incorrect updated timestamp');
       expect(updated.bar).to.equal(1, 'Incorrect attribute value');
+    });
+
+    it('should update an item with a reserved attribute name', async () => {
+      const original = await cruft.create({ id: 'foo', count: 0 });
+      const updated = await cruft.update({ id: 'foo', count: 1, version: original.version });
+      expect(updated.count).to.equal(1, 'Incorrect attribute value');
     });
 
     it('should throw when updating an out of date item', async () => {
