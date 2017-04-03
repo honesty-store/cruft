@@ -15,7 +15,7 @@ describe('cruft', () => {
 
   beforeEach(async () => {
     cruft = index<IFoo>({
-      tableName: 'transaction'
+      tableName: 'cruft-ddb'
     });
     db = new DynamoDB(<{ apiVersion: string, endpoint: string }>{
       apiVersion: '2012-08-10',
@@ -34,7 +34,7 @@ describe('cruft', () => {
           KeyType: 'HASH'
         }
       ],
-      TableName: 'transaction',
+      TableName: 'cruft-ddb',
       ProvisionedThroughput: {
         ReadCapacityUnits: 1,
         WriteCapacityUnits: 1
@@ -45,7 +45,7 @@ describe('cruft', () => {
 
   afterEach(async () => {
     await db.deleteTable({
-      TableName: 'transaction'
+      TableName: 'cruft-ddb'
     })
       .promise();
   });
