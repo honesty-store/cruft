@@ -3,7 +3,7 @@ import { create } from './create';
 import { read } from './read';
 import { update } from './update';
 import { find } from './find';
-import { __findAll } from './findAll';
+import { findAll, __findAll } from './findAll';
 import { truncate } from './truncate';
 
 export type Timestamp = number;
@@ -42,11 +42,21 @@ export interface IConfiguration {
   tableName: string;
 }
 
+export interface ICruft<T> {
+  create(item: T & { version: 0 }): Promise<T & IHasVersion & IHasMetadata>;
+  read(item: IHasId): Promise<T & IHasVersion & IHasMetadata>;
+  update(item: T & IHasId & IHasVersion): Promise<T & IHasVersion & IHasMetadata>;
+  find(fields: { [key: string]: string | number | boolean }): Promise<T & IHasVersion & IHasMetadata>;
+  __findAll(fields: { [key: string]: string | number | boolean }, options?: { limit?: number }): Promise<Array<T & IHasVersion & IHasMetadata>>;
+  findAll(fields: { [key: string]: string | number | boolean }): AsyncIterableIterator<T & IHasVersion & IHasMetadata>;
+  truncate(item: IHasId & IHasVersion): Promise<void>;
+}
+
 export default <T extends IHasId>({
   endpoint = process.env.AWS_DYNAMODB_ENDPOINT,
   region = process.env.AWS_REGION,
   tableName
-}) => {
+}): ICruft<T> => {
   // hack - endpoint isn't a valid property according to the typings
   const client = new DynamoDB.DocumentClient(<{ endpoint: string }>{
     apiVersion: '2012-08-10',
@@ -59,6 +69,7 @@ export default <T extends IHasId>({
     read: read<T>({ client, tableName }),
     update: update<T>({ client, tableName }),
     __findAll: __findAll<T>({ client, tableName }),
+    findAll: findAll<T>({ client, tableName }),
     find: find<T>({ client, tableName }),
     truncate: truncate({ client, tableName })
   };

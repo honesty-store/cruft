@@ -1,5 +1,6 @@
 import { assertHasValidDynamoDBFieldNames } from './assertHasValidDynamoDBFieldNames';
 import { IConfiguration, IHasVersion, IHasMetadata } from './index';
+import 'core-js/fn/symbol/async-iterator';
 
 const createFilterExpression = (fieldNames, fields) =>
   fieldNames.reduce(
@@ -10,10 +11,8 @@ const createFilterExpression = (fieldNames, fields) =>
     {}
   );
 
-// hack to retrieve all items until 2.3 arrives with support for async iterators
-// https://github.com/Microsoft/TypeScript/pull/12346
-export const __findAll = <T>({ client, tableName }: IConfiguration) =>
-  async (fields: { [key: string]: string | number | boolean }): Promise<Array<T & IHasVersion & IHasMetadata>> => {
+export const findAll = <T>({ client, tableName }: IConfiguration) =>
+  async function*(fields: { [key: string]: string | number | boolean }): AsyncIterableIterator<T & IHasVersion & IHasMetadata> {
     assertHasValidDynamoDBFieldNames(fields);
 
     if ('id' in fields) {
@@ -31,7 +30,6 @@ export const __findAll = <T>({ client, tableName }: IConfiguration) =>
       ? null
       : createFilterExpression(fieldNames, fields);
 
-    let result: Array<T & IHasVersion & IHasMetadata> = [];
     let key = null;
 
     do {
@@ -39,14 +37,30 @@ export const __findAll = <T>({ client, tableName }: IConfiguration) =>
         TableName: tableName,
         FilterExpression: filterExpression,
         ExpressionAttributeValues: expressionAtributeValues,
-        ExclusiveStartKey: key
+        ExclusiveStartKey: key,
+        Limit: 100
       })
         .promise();
 
-      result.push(...<Array<T & IHasVersion & IHasMetadata>>response.Items);
+      for (const item of <Array<T & IHasVersion & IHasMetadata>>response.Items) {
+        yield item;
+      }
+
       key = response.LastEvaluatedKey;
     }
     while (key != null);
+  };
+
+
+// deprecated hack from before async iterators were supported
+export const __findAll = <T>({ client, tableName }: IConfiguration) =>
+  async (fields: { [key: string]: string | number | boolean }): Promise<Array<T & IHasVersion & IHasMetadata>> => {
+
+    let result: Array<T & IHasVersion & IHasMetadata> = [];
+
+    for await (const item of findAll<T>({ client, tableName })(fields)) {
+      result.push(item);
+    }
 
     return result;
   };

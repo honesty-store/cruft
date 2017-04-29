@@ -6,5 +6,6 @@ A very simplistic optimistic locking abstraction over DynamoDB allowing the foll
 * `read` - retrieve an item by ID
 * `update` - update an item
 * `find` - retrieve an item by prototype
+  * `findAll` - retrieve all items matching prototype
 * `truncate` - delete an item by ID
 
