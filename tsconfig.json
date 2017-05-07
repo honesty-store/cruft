@@ -1,7 +1,9 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "es6",
+        "moduleResolution": "node",
+        "importHelpers": true,
         "target": "es6",
         "noImplicitAny": false,
         "sourceMap": false,
