@@ -9,3 +9,6 @@ A very simplistic optimistic locking abstraction over DynamoDB allowing the foll
   * `findAll` - retrieve all items matching prototype
 * `truncate` - delete an item by ID
 
+## Symbol.asyncIterator
+
+A `Symbol.asyncIterator` polyfill may be required depending on your environment e.g. `core-js/fn/symbol/async-iterator`.

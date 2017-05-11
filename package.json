@@ -7,9 +7,7 @@
   "repository": "git@github.com:honesty-store/cruft-ddb.git",
   "author": "Chris Price <price.c@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "core-js": "^2.4.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/chai": "^3.4.35",
     "@types/jest": "^19.2.2",

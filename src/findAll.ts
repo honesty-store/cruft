@@ -1,6 +1,5 @@
 import { assertHasValidDynamoDBFieldNames } from './assertHasValidDynamoDBFieldNames';
 import { IConfiguration, IHasVersion, IHasMetadata } from './index';
-import 'core-js/fn/symbol/async-iterator';
 
 const createFilterExpression = (fieldNames, fields) =>
   fieldNames.reduce(
