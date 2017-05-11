@@ -6,6 +6,8 @@ import { find } from './find';
 import { findAll, __findAll } from './findAll';
 import { truncate } from './truncate';
 
+(<any>Symbol).asyncIterator = Symbol.for('asyncIterator');
+
 export type Timestamp = number;
 
 export interface IHasId {

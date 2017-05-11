@@ -11,4 +11,4 @@ A very simplistic optimistic locking abstraction over DynamoDB allowing the foll
 
 ## Symbol.asyncIterator
 
-A `Symbol.asyncIterator` polyfill may be required depending on your environment e.g. `core-js/fn/symbol/async-iterator`.
+`Symbol.asyncIterator` has been polyfilled in a hopefully safe way! 
