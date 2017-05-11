@@ -8,18 +8,15 @@
   "author": "Chris Price <price.c@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "core-js": "^2.4.1",
-    "tslib": "^1.7.0"
+    "core-js": "^2.4.1"
   },
   "devDependencies": {
     "@types/chai": "^3.4.35",
     "@types/jest": "^19.2.2",
     "@types/node": "^7.0.8",
-    "aws-sdk": "^2.9.0",
+    "aws-sdk": "^2.49.0",
     "chai": "^3.5.0",
     "jest": "^19.0.2",
-    "rollup": "^0.41.6",
-    "rollup-plugin-node-resolve": "^3.0.0",
     "ts-jest": "^19.0.14",
     "tslint": "^5.1.0",
     "tslint-eslint-rules": "^4.0.0",
@@ -28,7 +25,7 @@
   },
   "scripts": {
     "lint": "tslint --project tsconfig.json --type-check",
-    "test": "npm run lint && tsc && jest && rollup -c"
+    "test": "npm run lint && tsc && jest"
   },
   "jest": {
     "transform": {
