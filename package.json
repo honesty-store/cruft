@@ -12,7 +12,6 @@
     "@types/chai": "^3.4.35",
     "@types/jest": "^19.2.2",
     "@types/node": "^7.0.8",
-    "aws-sdk": "^2.49.0",
     "chai": "^3.5.0",
     "jest": "^19.0.2",
     "ts-jest": "^19.0.14",
@@ -37,6 +36,6 @@
     ]
   },
   "peerDependencies": {
-    "aws-sdk": "^2.49.0"
+    "aws-sdk": "2.22.0"
   }
 }
