@@ -7,6 +7,8 @@ interface IFoo {
   [key: string]: any;
 }
 
+(<any>Symbol).asyncIterator = Symbol.for('asyncIterator');
+
 describe('cruft', () => {
 
   let cruft: ICruft<IFoo>;
